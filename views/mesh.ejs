@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+    <title>ss</title>
+		<style>
+			html, body {
+				padding: 0;
+				margin: 0;
+			}
+		</style>
+		<script src="/three.min.js"></script>
+		<script src="/OBJLoader.js"></script>
+		<!-- https://aerotwist.com/tutorials/getting-started-with-three-js/ -->
+		<!-- https://aerotwist.com/tutorials/getting-started-with-three-js/ -->
+		<!-- https://aerotwist.com/tutorials/getting-started-with-three-js/ -->
+		<script>
+			window.onload = function(){
+				// scene size
+				var WIDTH = 400;
+				var HEIGHT = 300;
+
+				// camera attributes
+				var VIEW_ANGLE = 45;
+				var ASPECT = WIDTH / HEIGHT;
+				var NEAR = 0.1;
+				var FAR = 10000;
+				
+				// get the dom element to attach to 
+				var contaienr = document.querySelector('#container');
+
+
+				// create a webGL renderer, camera and a scene
+				var renderer = new THREE.WebGLRenderer();
+				var camera = new THREE.PerspectiveCamera(
+					VIEW_ANGLE,
+					ASPECT,
+					NEAR,
+					FAR
+				);
+				
+				var scene = new THREE.Scene();
+
+				// Add the camera to the scene
+				scene.add(camera);
+
+				// Start the renderer
+				renderer.setSize(WIDTH, HEIGHT);
+
+				// Attach the renderer-supplied DOM element
+				container.appendChild(renderer.domElement);
+				
+
+				// Making a Mesh!! some primitives(geomtric meshes...)
+				// Set up the sphere vars
+				var RADIUS = 50;
+				var SEGEMENTS = 16;
+				var RINGS = 16;
+
+				// create the sphere's material
+				var sphereMaterial = new THREE.MeshLambertMaterial({
+					color: 0xCC0000	
+				});
+
+				// Create a new mesh with sphere geometry  
+				var sphere = new THREE.Mesh(
+					new THREE.SphereGeometry(
+						RADIUS, SEGEMENTS, RINGS		
+					),
+					sphereMaterial
+				);
+
+				// Move the Sphere back in Z so we can see it
+				sphere.position.z = -300;
+
+				// Finally, add the sphere to the scene
+				scene.add(sphere);
+
+
+				// Lights!
+				var pointLight = new THREE.PointLight(0xFFFFFF);
+
+				// set its position
+				pointLight.position.x = 10;
+				pointLight.position.y = 50;
+				pointLight.position.z = 130;
+
+				// add to the scene
+				scene.add(pointLight);
+
+
+				function update(){
+					// Draw!!!!!
+					renderer.render(scene, camera);
+
+					// Schedule the next frame
+					requestAnimationFrame(update);
+				}
+
+				// Schedule the first frame
+				requestAnimationFrame(update);
+
+			}
+		</script>
+	</head>
+	<body>
+		<div id="container"></div>
+	</body>
+</html>
