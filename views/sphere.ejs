@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+    <title>cube</title>
+		<script
+		src="https://code.jquery.com/jquery-1.12.4.min.js"
+		integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+		crossorigin="anonymous"></script>
+		<script src="/three.min.js"></script>
+		<script src="/OBJLoader.js"></script>
+		<script src="/OrbitControls.js"></script>
+		<style>
+			body {
+				text-align: center;	
+				color: white;
+				background-color: black;
+			}
+			canvas{
+				width: 100%;
+				height: 100%;
+				border: 1px solid black;
+			}
+		</style>
+		<!-- https://msdn.microsoft.com/ko-kr/library/dn479430(v=vs.85).aspx -->
+	</head>
+	<body>
+		<h1>오하시의 지구본</h1>
+		<button id="startButton">시작하기</button>
+		<div id="container"></div>
+		<script>
+			var bitmap = new Image();
+			//bitmap.src = '/moon.jpg';
+			bitmap.src = '/ocean.jpg';
+			bitmap.onerror = function(){
+				console.error('error loading: ' + bitmap.src);	
+			};
+
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(75, $(window).width() / $(window).height(), 0.1, 1000);
+			var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer();
+			renderer.setSize($(window).width(), $(window).height()); // set the size of the WebGL viewport
+
+			// get the dom element to attach to 
+			var contaienr = document.querySelector('#container');
+
+			// Attach the renderer-supplied DOM element
+			container.appendChild(renderer.domElement);
+
+			// Be aware that a light source is required for MeshPhongMaterial to work!!
+			var pointLight = new THREE.PointLight(0xFFFFFF);
+			scene.add(pointLight);
+
+			// http://stackoverflow.com/questions/35015251/how-do-i-load-multiple-textures-with-the-new-three-textureloader
+			// https://github.com/mrdoob/three.js/blob/master/examples/canvas_geometry_earth.html
+			var material;
+			var sphere;
+			var loader = new THREE.TextureLoader();
+			loader.load(
+				// resource URL
+				bitmap.src,
+				// function when resource is loaded
+				function (texture){
+					var geometry = new THREE.SphereGeometry(150, 64, 64);	// Radius size, number of vertical segments, number of horizontal rings
+					material = new THREE.MeshBasicMaterial({map: texture});	// create a material that reflects light, potentially causing sphere surface shadows
+					sphere = new THREE.Mesh(geometry, material); // create a mesh based on the specified geometry
+					scene.add(sphere);
+				}
+			); // create a texture object based on the bit map
+
+
+			camera.position.z = 350;
+
+			var render = function() {
+				sphere.rotation.x += 0.002;	
+				sphere.rotation.y += 0.005;	
+				
+				renderer.render(scene, camera); // each time we change the position of the cube object, we must re-render it
+				requestAnimationFrame(render);	// call the render() function up to 60 times per second
+			};
+
+			document.getElementById('startButton').addEventListener('click', function(){
+				render();	// start the rendering of the animation frames
+			}, false);
+		</script>
+	</body>
+</html>

@@ -14,8 +14,12 @@ router.get('/mesh', function(req, res, next) {
   res.render('mesh');
 });
 
-router.get('/3', function(req, res, next) {
-  res.render('index3');
+router.get('/cube', function(req, res, next) {
+  res.render('cube');
+});
+
+router.get('/sphere', function(req, res, next) {
+  res.render('sphere');
 });
 
 module.exports = router;

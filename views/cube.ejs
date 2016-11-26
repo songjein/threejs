@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+    <title>cube</title>
+		<script
+		src="https://code.jquery.com/jquery-1.12.4.min.js"
+		integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+		crossorigin="anonymous"></script>
+		<script src="/three.min.js"></script>
+		<script src="/OBJLoader.js"></script>
+		<script src="/OrbitControls.js"></script>
+		<style>
+			body {
+				text-align: center;	
+			}
+			canvas{
+				width: 100%;
+				height: 100%;
+				border: 1px solid black;
+			}
+		</style>
+		<!-- https://msdn.microsoft.com/ko-kr/library/dn479430(v=vs.85).aspx -->
+		<!-- 
+			OpenGL 과 마찬가지로 Three.js 는 오른쪽 좌표계를 사용한다	
+			!!!
+			컴퓨터 화면은 xy 평면과 일치한다. 원점 (0, 0, 0)에 중심이 있다.
+			양의 z 축은 화면에서 관찰자 쪽을 가리킨다!!
+
+			오브젝트가 scene에 추가되면 기본적으로 xyz 의 원점에 추가된다. (0,0,0)
+			따라서 카메라를 z축에서 양의방향으로 좀 떨어지게 배치하면 된다
+		-->
+	</head>
+	<body>
+		<div id="container"></div>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(75, $(window).width() / $(window).height(), 0.1, 1000);
+			/*
+				첫번째 매개변수는 맨 아래에서 보기의 맨 위까지 '카메라의 세로 시야(도)'를 정의한다.
+				지정된 시점에 화면에 표시되는 '관찰 가능한 세계의 범위(vertical / horizontal FOV??)'이다. 
+
+				두번째 매개변수는 카메라의 '가로/세로 비율'을 정의한다. 일반적으로 뷰포트 요소의 너비를
+				해당 높이로 나눈 값을 사용하는 것이 좋으며, 그렇게 안하면 이미지 찌그러질수.
+
+				세번째 매개 변수는 가까운 카메라 절두체 평면을 정의한다. (near)
+				우리가 보는 화면과 거의 일치한다
+				
+				네번째 변수는 먼 카메라 절두체 평면을 정의한다. 1000으로 설정하면 개체가 +- 1000 단위만큼
+				이동할 시, 보이는 three.js 환경 외부에 있는것으로 간주되어 보기에서 잘린다
+
+				* fov : field of view is the amount of game view that is on display during a game
+
+			*/
+			var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer();
+			renderer.setSize($(window).width(), $(window).height()); // set the size of the WebGL viewport
+
+			// get the dom element to attach to 
+			var contaienr = document.querySelector('#container');
+
+			// Attach the renderer-supplied DOM element
+			container.appendChild(renderer.domElement);
+
+			var geometry = new THREE.CubeGeometry(20, 20, 20);	// create a cube 
+			var material = new THREE.MeshBasicMaterial({color: 0x0000FF});	// skin the sube with blue color
+			var cube = new THREE.Mesh(geometry, material); // create a mesh based on the specified geometry
+			scene.add(cube); // add cube at 0,0,0
+
+			camera.position.z = 50;
+
+			var render = function() {
+				cube.rotation.x += 0.01;	
+				cube.rotation.y += 0.01;	
+				
+				renderer.render(scene, camera); // each time we change the position of the cube object, we must re-render it
+				requestAnimationFrame(render);	// call the render() function up to 60 times per second
+			};
+
+			render();	// start the rendering of the animation frames
+		</script>
+	</body>
+</html>
