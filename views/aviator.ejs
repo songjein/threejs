@@ -156,13 +156,13 @@
 			// It acts like the sun, that means that all the rays produced are parallel.
 			shadowLight = new THREE.DirectionalLight(0xffffff, .9);
 			
-			// set the direction of the light;
+			// set the direction of the light; 위치라 할 수 있음
 			shadowLight.position.set(150, 350, 350);
 
-			// allow shadow casting
+			// allow shadow casting ; 끈 것도 이뻐보임
 			shadowLight.castShadow = true;
 
-			// define the visible area of the projected shadow
+			// define the visible area of the projected shadow ; 여기는 이해가 잘 안감
 			shadowLight.shadow.camera.left = -400;
 			shadowLight.shadow.camera.right = 400;
 			shadowLight.shadow.camera.top = 400;
@@ -191,9 +191,11 @@
 			// create the geometry(shape) of the cylinder;
 			// the parameters are:
 			// radius top, radius bottom, height, number of segments on radius, number of segmest vertically
-			var geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10);
+			// 처음에 위를 보고 세워져있어
+			var geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10); 
 
 			// rotate the geometry on the x axis
+			// 얘는 아예 축을 돌려버리는 것 같아. mesh.rotation.x 로 할 순있지만 순간적인 회전인 듯
 			geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI/2));
 
 			// create the material
@@ -291,6 +293,7 @@
 				c.mesh.position.x = Math.cos(a) * h;
 
 				// rotate the cloud according to its position
+				// Math.PI / 2를 지우면 다 1자로 서있어, a는 왜있는진 아직 이해못함
 				c.mesh.rotation.z = a + Math.PI / 2;
 
 				// for a better result, we position the clouds
