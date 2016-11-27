@@ -56,23 +56,23 @@
 					var light = new THREE.PointLight(0xffffff);
 					light.position.set(50, 100, 150); // 1번째가 x축으로 앞뒤, 2번째가 y로 위아래,  3번째가 왼쪽+  오른쪽-
 					scene.add(light);
-
-					// texture 
+					
+					// 없어도 되네, 걍 로드됐을 때 콘솔에 찍어주려고 넣은거 같은데
 					var manager = new THREE.LoadingManager();
-						manager.onProgress = function ( item, loaded, total ) {
+					manager.onProgress = function ( item, loaded, total ) {
 						console.log( item, loaded, total );
 					};
 					
-					// geometry 가 오브젝트인듯
 					// model 
 					var loader = new THREE.OBJLoader(manager);
-					//loader.load( '/coco.obj', function ( obj ) {
 					loader.load( '/coco.obj', function ( obj ) {
+						/*
 						obj.traverse(function (child) {
 							if (child instanceof THREE.Mesh) {
 								//child.material = material;
 							}
 						});
+						*/
 						scene.add( obj );
 					});
 					
