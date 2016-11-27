@@ -66,6 +66,7 @@
 					// geometry 가 오브젝트인듯
 					// model 
 					var loader = new THREE.OBJLoader(manager);
+					//loader.load( '/coco.obj', function ( obj ) {
 					loader.load( '/coco.obj', function ( obj ) {
 						obj.traverse(function (child) {
 							if (child instanceof THREE.Mesh) {

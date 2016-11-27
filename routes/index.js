@@ -22,4 +22,8 @@ router.get('/sphere', function(req, res, next) {
   res.render('sphere');
 });
 
+router.get('/aviator', function(req, res, next) {
+  res.render('aviator');
+});
+
 module.exports = router;
